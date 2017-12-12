@@ -1,0 +1,19 @@
+{
+	"name": "stereochrome/yii2-discourse-usuario",
+	"description": "Discourse SSO module for use with yii2-usuario.",
+	"keywords": ["yii2", "framework", "discourse", "sso", "usuario"],
+	"homepage": "https://github.com/stereochrome/",
+	"type": "project",
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/stereochrome/yii2-discourse-usuario/issues",
+		"source": "https://github.com/stereochrome/yii2-discourse-usuario"
+	},
+	"require": {
+		"php": ">=5.7.0",
+    "stereochrome/yii2-discourse-usuario": "*"
+	},
+	"autoload": {
+		"psr-4": {"stereochrome\\discourse\\": ""}
+	}
+}
