@@ -11,9 +11,12 @@
 	},
 	"require": {
 		"php": ">=5.7.0",
-    "stereochrome/yii2-discourse-usuario": "*"
+    		"stereochrome/yii2-discourse-usuario": "*"
 	},
 	"autoload": {
 		"psr-4": {"Stereochrome\\Discourse\\": "./src/Discourse"}
-	}
+	},
+    	"extra": {
+        	"bootstrap": "Stereochrome\\Discourse\\Bootstrap"
+    	}
 }
