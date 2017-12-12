@@ -3,7 +3,7 @@
 	"description": "Discourse SSO module for use with yii2-usuario.",
 	"keywords": ["yii2", "framework", "discourse", "sso", "usuario"],
 	"homepage": "https://github.com/stereochrome/",
-	"type": "project",
+	"type": "yii2-extension",
 	"license": "BSD-3-Clause",
 	"support": {
 		"issues": "https://github.com/stereochrome/yii2-discourse-usuario/issues",

@@ -1,6 +1,4 @@
 <?php
-die();
-
 namespace Stereochrome\Discourse;
 
 use Da\User\Controller\SecurityController;
@@ -21,10 +19,11 @@ class Bootstrap implements BootstrapInterface {
 
 		if ($app->hasModule('discourse') && $app->getModule('discourse') instanceof Module) {
 
-			$this->initControllerNamespace($app)
+			$this->initControllerNamespace($app);
 			$this->initUrlRoutes($app);
 			$this->initEvents($app);
 		}
+			die();
 		
 	}
 
@@ -43,7 +42,7 @@ class Bootstrap implements BootstrapInterface {
 		    }
 
 		});
-	}123
+	}
 
 	protected function initUrlRoutes(WebApplication $app)
     {
