@@ -14,6 +14,6 @@
     "stereochrome/yii2-discourse-usuario": "*"
 	},
 	"autoload": {
-		"psr-4": {"stereochrome\\discourse\\": ""}
+		"psr-4": {"stereochrome\\discourse\\": "./src/Discourse"}
 	}
 }
