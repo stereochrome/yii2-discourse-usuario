@@ -10,10 +10,17 @@
 		"source": "https://github.com/stereochrome/yii2-discourse-usuario"
 	},
 	"require": {
-		"php": ">=5.7.0",
+		"php": ">=5.7",
     	"stereochrome/yii2-discourse-usuario": "*"
 	},
+	"require-dev": {
+	},
 	"autoload": {
+		"psr-4": {
+			"Stereochrome\\Discourse\\": "./src/Discourse"
+		}
+	},
+	"autoload-dev": {
 		"psr-4": {
 			"Stereochrome\\Discourse\\": "./src/Discourse"
 		}

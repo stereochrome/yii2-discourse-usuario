@@ -1,4 +1,5 @@
 <?php
+die();
 
 namespace Stereochrome\Discourse;
 
@@ -6,6 +7,7 @@ use Da\User\Controller\SecurityController;
 use Da\User\Event\FormEvent;
 use Da\User\Model\User;
 use yii\base\Event;
+use yii\base\BootstrapInterface;
 
 class Bootstrap implements BootstrapInterface {
 
