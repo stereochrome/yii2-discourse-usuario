@@ -11,7 +11,7 @@
 	},
 	"require": {
 		"php": ">=5.7",
-		"2amigos/yii2-usuario": "~1.0",
+		"2amigos/yii2-usuario": "*",
     	"sammaye/yii2-discourse-sso": "~1.0"
 	},
 	"require-dev": {
