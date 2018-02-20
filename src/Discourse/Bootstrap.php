@@ -5,7 +5,12 @@ use Da\User\Controller\SecurityController;
 use Da\User\Event\FormEvent;
 use Da\User\Model\User;
 use yii\base\Event;
+use Yii;
 use yii\base\BootstrapInterface;
+use yii\web\Application as WebApplication;
+use yii\console\Application as ConsoleApplication;
+use yii\base\Application;
+use yii\i18n\PhpMessageSource;
 
 class Bootstrap implements BootstrapInterface {
 
@@ -18,12 +23,17 @@ class Bootstrap implements BootstrapInterface {
 		}
 
 		if ($app->hasModule('discourse') && $app->getModule('discourse') instanceof Module) {
+			$this->initTranslations($app);
+			$this->initContainer($app);
 
-			$this->initControllerNamespace($app);
-			$this->initUrlRoutes($app);
-			$this->initEvents($app);
+			if ($app instanceof WebApplication) {
+				$this->initControllerNamespace($app);
+				$this->initUrlRoutes($app);
+				$this->initEvents($app);
+			} else {
+
+			}
 		}
-			die();
 		
 	}
 
@@ -66,4 +76,29 @@ class Bootstrap implements BootstrapInterface {
         $app->getModule('discourse')->controllerNamespace = 'Stereochrome\Discourse\Controller';
         $app->getModule('discourse')->setViewPath('@Stereochrome/Discourse/resources/views');
     }
+
+    protected function initTranslations(Application $app)
+    {
+        if (!isset($app->get('i18n')->translations['discourse*'])) {
+            $app->get('i18n')->translations['discourse*'] = [
+                'class' => PhpMessageSource::class,
+                'basePath' => __DIR__ . '/resources/i18n',
+                'sourceLanguage' => 'en-US',
+            ];
+        }
+    }
+
+    protected function initContainer($app)
+    {
+        $di = Yii::$container;
+        try {
+
+            // events
+            $di->set(Event\UserEvent::class);
+
+        } catch (Exception $e) {
+            die($e);
+        }
+    }
+
 }

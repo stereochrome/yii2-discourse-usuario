@@ -11,7 +11,8 @@
 	},
 	"require": {
 		"php": ">=5.7",
-    	"stereochrome/yii2-discourse-usuario": "*"
+		"2amigos/yii2-usuario": "~1.0",
+    	"sammaye/yii2-discourse-sso": "~1.0"
 	},
 	"require-dev": {
 	},

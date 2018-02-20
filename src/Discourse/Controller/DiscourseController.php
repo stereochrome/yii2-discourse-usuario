@@ -1,17 +1,34 @@
 <?php
 
-namespace Stereochrome\Discourse\Controllers;
+namespace Stereochrome\Discourse\Controller;
 
 use \yii\web\Controller;
 use \Yii;
+use \yii\web\ForbiddenHttpException;
+use \Stereochrome\Discourse\Event\UserEvent;
+use Da\User\Traits\ContainerAwareTrait;
 
 class DiscourseController extends Controller {
+	
+	use ContainerAwareTrait;
 	
 	public function actionNotApproved() {
 		return $this->render("not_approved");
 	}
 
 	public function actionLogout() {
+		
+		$user = Yii::$app->user->identity;
+
+		if(isset($user)) {
+			$event = $this->make(UserEvent::class, [$user]);
+			$this->trigger(UserEvent::EVENT_BEFORE_DISCOURSE_LOGOUT, $event);
+		} else {
+			\Yii::$app->session->setFlash('success', 'Sie wurden abgemeldet.');
+			return $this->redirect('/');
+
+		}
+
 		return $this->render("logout");	
 	}
 
@@ -24,7 +41,7 @@ class DiscourseController extends Controller {
 
 		if(!($sso->validate($payload, $sig))){
 			// invaild, deny
-			throw new ForbiddenHttpException('Bad SSO request');
+			throw new ForbiddenHttpException(Yii::t('discourse', 'Bad SSO request'));
 		}
 		
 		$nonce = $sso->getNonce($payload);
@@ -33,28 +50,21 @@ class DiscourseController extends Controller {
 			// We add session variable to track it after we log the user in so we can redirect them back
 			// This method works well with custom login methods like social networks
 			Yii::$app->getSession()->set('sso', ['sso' => $payload, 'sig' => $sig]);
-			return $this->redirect(['user/login']);
+			return $this->redirect(['/user/login']);
 		}else{
 			$user = Yii::$app->user->identity;
 		}
-		
+
+		$event = $this->make(UserEvent::class, [$user]);
+		$this->trigger(UserEvent::EVENT_BEFORE_DISCOURSE_SSO, $event);
+
 		Yii::$app->getSession()->remove('sso');
 		
-		// We send over the data
-		$userparams = [
-	    	"nonce" => $nonce,
-	    	"external_id" => (String)$user->id,
-	    	"email" => $user->email,
-	    	
-	    	// Optional - feel free to delete these two
-	    	"username" => $user->username,
-	    	"name" => $user->profileName,
-	    	
-	    	//'avatar_url' => Url::to(['image/profile-image', 'id' => (String)$user->_id], 'http')
-		];
-		
+		$userparams = ($this->module->createSsoPayload)($nonce, $user);
 		$q = $sso->buildLoginString($userparams);
 		
+		$this->trigger(UserEvent::EVENT_AFTER_DISCOURSE_SSO, $event);
+
 		/// We redirect back
 		return $this->redirect(Yii::getAlias('@discourse') . '/session/sso_login?' . $q);
 
