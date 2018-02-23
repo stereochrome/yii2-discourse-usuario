@@ -60,7 +60,7 @@ class DiscourseController extends Controller {
 
 		Yii::$app->getSession()->remove('sso');
 		
-		$userparams = ($this->module->createSsoPayload)($nonce, $user);
+		$userparams = call_user_func($this->module->createSsoPayload, $nonce, $user);
 		$q = $sso->buildLoginString($userparams);
 		
 		$this->trigger(UserEvent::EVENT_AFTER_DISCOURSE_SSO, $event);
