@@ -1,3 +1,4 @@
+
 <?php
 
 namespace Stereochrome\Discourse\Controller;
@@ -24,12 +25,14 @@ class DiscourseController extends Controller {
 			$event = $this->make(UserEvent::class, [$user]);
 			$this->trigger(UserEvent::EVENT_BEFORE_DISCOURSE_LOGOUT, $event);
 		} else {
-			\Yii::$app->session->setFlash('success', 'Sie wurden abgemeldet.');
 			return $this->redirect('/');
-
 		}
 
-		return $this->render("logout");	
+		Yii::$app->user->logout();
+		\Yii::$app->session->setFlash('success', 'Sie wurden abgemeldet.');
+
+        return $this->goHome();
+    
 	}
 
 	public function actionSso() {
@@ -66,6 +69,7 @@ class DiscourseController extends Controller {
 		$this->trigger(UserEvent::EVENT_AFTER_DISCOURSE_SSO, $event);
 
 		/// We redirect back
+		
 		return $this->redirect(Yii::getAlias('@discourse') . '/session/sso_login?' . $q);
 
 
