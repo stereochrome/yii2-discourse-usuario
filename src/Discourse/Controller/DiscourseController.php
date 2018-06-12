@@ -1,4 +1,3 @@
-
 <?php
 
 namespace Stereochrome\Discourse\Controller;
